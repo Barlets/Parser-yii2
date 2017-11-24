@@ -16,9 +16,9 @@
 			$this->getData();
 		}
 		
-		public function getProduct()
+		public function getProductItems($items_count = 5)
 		{
-			return $this->product;
+			return array_chunk($this->product, $items_count);
 		}
 		
 		public function getData()
@@ -29,12 +29,12 @@
 				$this->getName($item);
 				//Получаем изображение товара
 				$this->getImg($item);
-				//Получаем цену товара
-				$this->getPrice($item);
 				//Получаем ссылку на товар
 				$this->getLink($item);
-				
-				//var_dump($this->product);
+				//Получаем адрес сайта
+				$this->getBaseUrl();
+				//Получаем цену товара
+				$this->getPrice($item);
 			}
 		}
 		
@@ -57,19 +57,26 @@
 		public function getImg($item)
 		{
 			$pattern = '/<img.+?src="(.+?)".+?/';
-			return $this->product['img'] = $this->parse($pattern, $item);
+			return $this->product[]['img'] = $this->parse($pattern, $item);
 		}
 		
 		public function getPrice($item)
 		{
 			$pattern = '/class="iprice_c">(.+?)<\/span>/';
-			return $this->product['price'] = $this->parse($pattern, $item);
+			$price_int = (int)preg_replace('/\s/', '', $this->parse($pattern, $item));
+			return $this->product[]['price'] = $price_int;
 		}
 		
 		public function getLink($item)
 		{
 			$pattern = '/<a.+?href="(.+?)".+?/';
-			return $this->product['link'] = $this->parse($pattern, $item);
+			return $this->product[]['link'] = $this->parse($pattern, $item);
+		}
+		
+		public function getBaseUrl()
+		{
+			$pattern = '/(https:\/\/.+?)\//';
+			return $this->product[]['base_url'] = $this->parse($pattern, $this->url);
 		}
 		
 		public function parse($pattern, $item)
@@ -78,5 +85,6 @@
 			$result = array_pop($match);
 			return array_pop($result);
 		}
+		
 		
 	}

@@ -20,9 +20,11 @@
 		{
 			$url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
 			$model = new Parser($url);
-			$result = $model->getProduct();
+			$items = $model->getProductItems(5);
 			
-			var_dump($result);
+			foreach ($items as $item) {
+				var_dump($item);
+			}
 			
 			return $this->render('index');
 		}

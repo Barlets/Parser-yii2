@@ -6,7 +6,7 @@
 	{
 		public function __construct($url);
 		
-		public function getProduct();
+		public function getProductItems();
 		
 		public function getSite();
 		
@@ -19,6 +19,8 @@
 		public function getPrice($item);
 		
 		public function getLink($item);
+		
+		public function getBaseUrl();
 		
 		public function parse($pattern, $item);
 		
