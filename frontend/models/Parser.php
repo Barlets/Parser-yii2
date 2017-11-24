@@ -8,7 +8,7 @@
 	class Parser implements ParserInterface
 	{
 		private $url;
-		private $product = [];
+		private $product;
 		
 		public function __construct($url)
 		{
@@ -23,19 +23,21 @@
 		
 		public function getData()
 		{
+			$product = [];
 			//Получаем все дочерние div в виде массива
 			foreach ($this->getSite() as $item) {
 				//Получаем название товара
-				$this->getName($item);
+				$product[]['name'] = $this->getName($item);
 				//Получаем изображение товара
-				$this->getImg($item);
+				$product[]['img'] = $this->getImg($item);
 				//Получаем ссылку на товар
-				$this->getLink($item);
+				$product[]['link'] = $this->getLink($item);
 				//Получаем адрес сайта
-				$this->getBaseUrl();
+				$product[]['base_url'] = $this->getBaseUrl();
 				//Получаем цену товара
-				$this->getPrice($item);
+				$product[]['price'] = $this->getPrice($item);
 			}
+			return $this->product = $product;
 		}
 		
 		public function getSite()
@@ -51,32 +53,31 @@
 		public function getName($item)
 		{
 			$pattern = '/class="cat_title".+?<h2\>(.+?)<\/h2>/';
-			return $this->product[]['name'] = $this->parse($pattern, $item);
+			return $this->parse($pattern, $item);
 		}
 		
 		public function getImg($item)
 		{
 			$pattern = '/<img.+?src="(.+?)".+?/';
-			return $this->product[]['img'] = $this->parse($pattern, $item);
+			return $this->parse($pattern, $item);
 		}
 		
 		public function getPrice($item)
 		{
 			$pattern = '/class="iprice_c">(.+?)<\/span>/';
-			$price_int = (int)preg_replace('/\s/', '', $this->parse($pattern, $item));
-			return $this->product[]['price'] = $price_int;
+			return $price_int = (int)preg_replace('/\s/', '', $this->parse($pattern, $item));
 		}
 		
 		public function getLink($item)
 		{
 			$pattern = '/<a.+?href="(.+?)".+?/';
-			return $this->product[]['link'] = $this->parse($pattern, $item);
+			return $this->parse($pattern, $item);
 		}
 		
 		public function getBaseUrl()
 		{
 			$pattern = '/(https:\/\/.+?)\//';
-			return $this->product[]['base_url'] = $this->parse($pattern, $this->url);
+			return $this->parse($pattern, $this->url);
 		}
 		
 		public function parse($pattern, $item)

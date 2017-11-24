@@ -21,8 +21,9 @@
 			$url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
 			$model = new Parser($url);
 			$items = $model->getProductItems(5);
-			
+
 			foreach ($items as $item) {
+
 				var_dump($item);
 			}
 			
