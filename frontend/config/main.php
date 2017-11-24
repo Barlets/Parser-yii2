@@ -47,5 +47,10 @@ return [
         ],
      
     ],
+    'modules' => [
+	     'parser' => [
+		      'class' => 'app\modules\parser\Parser',
+	     ],
+    ],
     'params' => $params,
 ];
