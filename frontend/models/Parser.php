@@ -51,7 +51,7 @@
 		public function getName($item)
 		{
 			$pattern = '/class="cat_title".+?<h2\>(.+?)<\/h2>/';
-			return $this->product['name'] = $this->parse($pattern, $item);
+			return $this->product[]['name'] = $this->parse($pattern, $item);
 		}
 		
 		public function getImg($item)
