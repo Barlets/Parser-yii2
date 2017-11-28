@@ -1,6 +1,6 @@
 <?php
 	
-	namespace app\components\interfaces\parser;
+	namespace app\modules\parser\components\interfaces\parser;
 	
 	interface ParserInterface
 	{

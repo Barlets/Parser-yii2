@@ -37,7 +37,7 @@
 			 ],
 		]);
 		$menuItems = [
-			 ['label' => 'Home', 'url' => ['/parser']],
+			 ['label' => 'Home', 'url' => ['parser/index']],
 			 ['label' => 'List', 'url' => ['parser/list']],
 			 ['label' => 'Parse', 'url' => ['parser/parse']],
 		];

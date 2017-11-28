@@ -3,13 +3,17 @@
 	namespace app\modules\parser\controllers;
 	
 	use yii\web\Controller;
-	
 	use app\models\Product;
-	
 	
 	class ParserController extends Controller
 	{
 		private $url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
+		
+		public function actionIndex()
+		{
+
+			return $this->render('index');
+		}
 		
 		public function actionList()
 		{
@@ -17,7 +21,7 @@
 			
 			$product = $model->getAll();
 			
-			return $this->render('index', [
+			return $this->render('list', [
 				 'model' => $product
 			]);
 		}
@@ -39,7 +43,14 @@
 				}
 			}
 			return $this->redirect('list');
+			
+		}
 		
+		public function actionDeleteAll()
+		{
+			Product::deleteAll();
+			
+			return $this->redirect('list');
 		}
 		
 	}

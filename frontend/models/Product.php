@@ -2,11 +2,13 @@
 	
 	namespace app\models;
 	
-	use Yii;
 	use yii\db\ActiveRecord;
 	use yii\helpers\ArrayHelper;
-	use app\models\Parser;
+	use app\modules\parser\Parser;
 	
+	/**
+	 * @property mixed $namesFromDB
+	 */
 	class Product extends ActiveRecord
 	{
 		public static function tableName()
