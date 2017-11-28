@@ -7,84 +7,79 @@
 	
 	class Parser implements ParserInterface
 	{
-		private $url;
-		private $product;
+		private static $url;
+		private static $products = [];
 		
-		public function __construct($url)
+		public static function getParsingResult($url = '')
 		{
-			$this->url = $url;
-			$this->getData();
+			self::$url = $url;
+			self::getData();
+			return self::$products;
 		}
 		
-		public function getProductItems($items_count = 5)
-		{
-			return array_chunk($this->product, $items_count);
-		}
-		
-		public function getData()
+		private static function getData()
 		{
 			$product = [];
-			//Получаем все дочерние div в виде массива
-			foreach ($this->getSite() as $item) {
-				//Получаем название товара
-				$product[]['name'] = $this->getName($item);
-				//Получаем изображение товара
-				$product[]['img'] = $this->getImg($item);
-				//Получаем ссылку на товар
-				$product[]['link'] = $this->getLink($item);
-				//Получаем адрес сайта
-				$product[]['base_url'] = $this->getBaseUrl();
-				//Получаем цену товара
-				$product[]['price'] = $this->getPrice($item);
+			foreach (self::getSite() as $item) {
+				$product['id'] = self::setTempId();
+				$product['name'] = self::getName($item);
+				$product['img'] = self::getImg($item);
+				$product['link'] = self::getLink($item);
+				$product['base_url'] = self::getBaseUrl();
+				$product['price'] = self::getPrice($item);
+				array_push(self::$products, $product);
 			}
-			return $this->product = $product;
 		}
 		
-		public function getSite()
+		private static function getSite()
 		{
-			$site = Curl::curl($this->url);
-			
-			//Получаем массив div со всей продукцией на странице
+			$site = Curl::curl(self::$url);
+
 			$pattern = "/\<div[^\>]*class\=\"catalog_item\".*/";
 			preg_match_all($pattern, $site, $catalog_item);
 			return array_pop($catalog_item);
 		}
 		
-		public function getName($item)
+		private static function getName($item)
 		{
 			$pattern = '/class="cat_title".+?<h2\>(.+?)<\/h2>/';
-			return $this->parse($pattern, $item);
+			return self::parse($pattern, $item);
 		}
 		
-		public function getImg($item)
+		private static function getImg($item)
 		{
 			$pattern = '/<img.+?src="(.+?)".+?/';
-			return $this->parse($pattern, $item);
+			return self::parse($pattern, $item);
 		}
 		
-		public function getPrice($item)
+		private static function getPrice($item)
 		{
 			$pattern = '/class="iprice_c">(.+?)<\/span>/';
-			return $price_int = (int)preg_replace('/\s/', '', $this->parse($pattern, $item));
+			return $price_int = (int)preg_replace('/\s/', '', self::parse($pattern, $item));
 		}
 		
-		public function getLink($item)
+		private static function getLink($item)
 		{
 			$pattern = '/<a.+?href="(.+?)".+?/';
-			return $this->parse($pattern, $item);
+			return self::parse($pattern, $item);
 		}
 		
-		public function getBaseUrl()
+		private static function getBaseUrl()
 		{
 			$pattern = '/(https:\/\/.+?)\//';
-			return $this->parse($pattern, $this->url);
+			return self::parse($pattern, self::$url);
 		}
 		
-		public function parse($pattern, $item)
+		private static function parse($pattern, $item)
 		{
 			preg_match_all($pattern, $item, $match);
 			$result = array_pop($match);
 			return array_pop($result);
+		}
+		
+		private static function setTempId()
+		{
+			return count(self::$products);
 		}
 		
 		

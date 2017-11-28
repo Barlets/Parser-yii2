@@ -1,32 +1,45 @@
 <?php
-	/**
-	 * Created by PhpStorm.
-	 * User: yaros
-	 * Date: 22.11.2017
-	 * Time: 17:25
-	 */
 	
 	namespace app\modules\parser\controllers;
 	
-	
 	use yii\web\Controller;
-	use app\models\Parser;
+	
+	use app\models\Product;
 	
 	
 	class ParserController extends Controller
 	{
+		private $url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
 		
-		public function actionIndex()
+		public function actionList()
 		{
-			$url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
-			$model = new Parser($url);
-			$items = $model->getProductItems(5);
-
-			foreach ($items as $item) {
-
-				var_dump($item);
-			}
+			$model = new Product();
 			
-			return $this->render('index');
+			$product = $model->getAll();
+			
+			return $this->render('index', [
+				 'model' => $product
+			]);
 		}
+		
+		public function actionParse()
+		{
+			
+			$model = new Product();
+			
+			$parsingResults = $model->parseIt($this->url);
+			
+			$model->findIdenticalNames($parsingResults);
+			
+			if ($parsingResults != NULL && is_array($parsingResults)) {
+				foreach ($parsingResults as $productItem) {
+					$model = new Product();
+					$model->load(['Product' => $productItem]);
+					$model->save();
+				}
+			}
+			return $this->redirect('list');
+		
+		}
+		
 	}
