@@ -49,8 +49,9 @@
 		 ],
 		 'modules'             => [
 			  'parser' => [
-					'class' => 'app\modules\parser\Parser',
+					'class' => 'common\modules\parser\Parser',
 			  ],
+
 		 ],
 		
 		 'params'              => $params,

@@ -37,9 +37,9 @@
 			 ],
 		]);
 		$menuItems = [
-			 ['label' => 'Home', 'url' => ['parser/index']],
-			 ['label' => 'List', 'url' => ['parser/list']],
-			 ['label' => 'Parse', 'url' => ['parser/parse']],
+			 ['label' => 'Home', 'url' => ['default/index']],
+			 ['label' => 'List', 'url' => ['default/list']],
+			 ['label' => 'Parse', 'url' => ['default/parse']],
 		];
 		
 		echo Nav::widget([

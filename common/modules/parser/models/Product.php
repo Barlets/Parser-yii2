@@ -1,6 +1,6 @@
 <?php
 	
-	namespace app\models;
+	namespace common\modules\parser\models;
 	
 	use yii\db\ActiveRecord;
 	use yii\helpers\ArrayHelper;

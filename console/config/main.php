@@ -37,5 +37,13 @@
 					],
 			  ],
 		 ],
+		
+		 'modules'             => [
+			  'parser' => [
+				   'class' => 'common\modules\parser\Parser',
+			  ],
+		
+		 ],
+		
 		 'params'     => $params,
 	];

@@ -1,13 +1,13 @@
 <?php
 	
-	namespace app\modules\parser;
+	namespace common\modules\parser;
 	
-	use app\modules\parser\components\interfaces\ParserInterface;
-	use app\modules\parser\components\models\Curl;
+	use common\modules\parser\components\interfaces\ParserInterface;
+	use common\modules\parser\models\Curl;
 	use yii\base\Module;
 	
 	/**
-	 * parser module definition class
+	 * default module definition class
 	 */
 	class Parser extends Module implements ParserInterface
 	{
@@ -18,7 +18,7 @@
 		 * @property Parser[] $products
 		 */
 		public $layout = '/parser';
-		public $controllerNamespace = 'app\modules\parser\controllers';
+		public $controllerNamespace = 'common\modules\parser\controllers';
 		private static $url;
 		private static $products = [];
 		

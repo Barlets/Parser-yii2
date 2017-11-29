@@ -1,15 +1,22 @@
 <?php
 	
-	namespace app\modules\parser\controllers;
+	namespace common\modules\parser\controllers;
 	
-	use app\modules\parser\Parser;
+	use common\modules\parser\models\Product;
+	use common\modules\parser\Parser;
 	use yii\web\Controller;
-	use app\models\Product;
 	
-	class ParserController extends Controller
+	/**
+	 * Default controller for the `parser` module
+	 */
+	class DefaultController extends Controller
 	{
 		private $url = 'https://enko.com.ua/shop/telefoniya/mobilnye-telefony/';
 		
+		/**
+		 * Renders the index view for the module
+		 * @return string
+		 */
 		public function actionIndex()
 		{
 			return $this->render('index');
@@ -26,6 +33,10 @@
 			]);
 		}
 		
+		/**
+		 * Executing parsing script
+		 * @return \yii\web\Response
+		 */
 		public function actionParse()
 		{
 			$parsingResults = Parser::getParsingResult($this->url);
@@ -49,6 +60,10 @@
 			return $this->redirect('list');
 		}
 		
+		/**
+		 * Execute deleting all entries in db
+		 * @return \yii\web\Response
+		 */
 		public function actionDeleteAll()
 		{
 			Product::deleteAll();

@@ -1,6 +1,6 @@
 <?php
 	
-	namespace app\modules\parser\components\models;
+	namespace common\modules\parser\models;
 	
 	
 	class Curl
