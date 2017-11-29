@@ -2,6 +2,7 @@
 	
 	namespace app\modules\parser\controllers;
 	
+	use app\modules\parser\Parser;
 	use yii\web\Controller;
 	use app\models\Product;
 	
@@ -27,22 +28,25 @@
 		
 		public function actionParse()
 		{
+			$parsingResults = Parser::getParsingResult($this->url);
 			
 			$model = new Product();
-			
-			$parsingResults = $model->parseIt($this->url);
-			
-			$model->findIdenticalNames($parsingResults);
+			$model->findIdenticalNames($parsingResults, true);
 			
 			if ($parsingResults != NULL && is_array($parsingResults)) {
+				
 				foreach ($parsingResults as $productItem) {
 					$model = new Product();
 					$model->load(['Product' => $productItem]);
-					$model->save();
+					
+					if ($model->validate($productItem)) {
+						$model->save();
+					}
+					
 				}
 			}
-			return $this->redirect('list');
 			
+			return $this->redirect('list');
 		}
 		
 		public function actionDeleteAll()

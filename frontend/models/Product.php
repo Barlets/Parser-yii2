@@ -4,7 +4,6 @@
 	
 	use yii\db\ActiveRecord;
 	use yii\helpers\ArrayHelper;
-	use app\modules\parser\Parser;
 	
 	/**
 	 * @property array $namesHashFromDb
@@ -56,23 +55,18 @@
 		}
 		
 		/**
-		 * @param int $url
-		 * @return array
-		 */
-		public function parseIt($url)
-		{
-			return Parser::getParsingResult($url);
-		}
-		
-		/**
-		 * @param $parsingResults
+		 * @param $parsingResults []
+		 * @param bool $delete
 		 * @return bool
 		 */
-		public function findIdenticalNames($parsingResults)
+		public function findIdenticalNames($parsingResults, $delete)
 		{
 			$namesInDbHash = $this->getNamesHashFromDb();
 			$namesInParsed = $this->getNamesFromParsedSite($parsingResults);
-			return $this->findAndDeleteExistingRows($namesInDbHash, $namesInParsed);
+			
+			if ($delete) {
+				return $this->findAndDeleteExistingRows($namesInDbHash, $namesInParsed);
+			}
 		}
 		
 		/**
@@ -100,12 +94,12 @@
 		public function findAndDeleteExistingRows($namesInDbHash, $namesInParsed)
 		{
 			foreach ($namesInParsed as $key => $value) {
-				$result = [$key => md5($value)];
+				$namesInParsedHash[$key] = md5($value);
 				
-				if (in_array($result, $namesInDbHash)) {
+				if (in_array($namesInParsedHash, $namesInDbHash)) {
 					return true;
 				} else {
-					$id = $this->getProductId($result, $namesInDbHash);
+					$id = $this->getProductId($namesInParsedHash, $namesInDbHash);
 					$models = $this->getProductById($id);
 					$this->deleteDuplicateRow($models);
 				}
