@@ -1,6 +1,6 @@
 <?php
 	
-	namespace console\controllers;
+	namespace common\modules\parser\console\controllers;
 	
 	
 	use common\modules\parser\models\Product;

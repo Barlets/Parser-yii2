@@ -23,7 +23,7 @@
 					'namespace' => 'common\fixtures',
 			  ],
 			  'test'    => [
-					'class' => 'console\controllers\TestController',
+					'class' => 'common\modules\parser\console\controllers\TestController',
 			  ]
 		 ],
 		 
